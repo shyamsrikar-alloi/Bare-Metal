@@ -171,4 +171,6 @@ scrape_configs:
 #      username: "<Grafana Cloud instance ID>"
 #      password: "<API key>"
 ```
-
+```
+prometheus --config.file=/opt/monitoring/config/prometheus.yml
+```
