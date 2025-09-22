@@ -174,3 +174,44 @@ scrape_configs:
 ```
 prometheus --config.file=/opt/monitoring/config/prometheus.yml
 ```
+
+
+```
+sudo nano /etc/systemd/system/prometheus.service
+```
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+  --config.file=/opt/monitoring/config/prometheus.yml \
+  --storage.tsdb.path=/opt/monitoring/data
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+- sudo nano /etc/systemd/system/node_exporter.service
+```
+sudo systemctl daemon-reload
+sudo systemctl restart prometheus
+```
+```
+[Unit]
+Description=Prometheus Node Exporter
+After=network.target
+
+[Service]
+User=monitoring
+ExecStart=/usr/local/bin/node_exporter
+
+
+[Install]
+WantedBy=multi-user.target
+```
