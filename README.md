@@ -179,6 +179,7 @@ prometheus --config.file=/opt/monitoring/config/prometheus.yml
 ```
 sudo nano /etc/systemd/system/prometheus.service
 ```
+```
 [Unit]
 Description=Prometheus
 Wants=network-online.target
