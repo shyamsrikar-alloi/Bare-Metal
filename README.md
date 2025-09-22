@@ -115,3 +115,60 @@ sudo systemctl enable --now node_exporter
 ```
 curl http://localhost:9100/metrics
 ```
+- Download Prometheus AMD (lightweight agent is fine):
+```
+wget https://github.com/prometheus/prometheus/releases/download/v2.50.0/prometheus-2.50.0.linux-amd64.tar.gz
+tar xvf prometheus-2.50.0.linux-amd64.tar.gz
+sudo mv prometheus-2.50.0.linux-amd64/prometheus /usr/local/bin/
+sudo mv prometheus-2.50.0.linux-amd64/promtool /usr/local/bin/
+```
+- for ARM
+```
+# Download Prometheus for ARM64
+wget https://github.com/prometheus/prometheus/releases/download/v2.50.0/prometheus-2.50.0.linux-arm64.tar.gz
+
+# Extract the tarball
+tar xvf prometheus-2.50.0.linux-arm64.tar.gz
+
+# Move binaries to /usr/local/bin
+sudo mv prometheus-2.50.0.linux-arm64/prometheus /usr/local/bin/
+sudo mv prometheus-2.50.0.linux-arm64/promtool /usr/local/bin/
+
+# Optional: verify installation
+prometheus --version
+promtool --version
+```
+- Create a Prometheus config file
+```
+nano /opt/monitoring/config/prometheus.yml:
+# paste this
+# Global configuration
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Scrape Prometheus itself
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+# Scrape Node Exporter metrics
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+
+# Optional: Textfile collector metrics for hardware (SMART/NVMe/IPMI)
+  - job_name: 'textfile_metrics'
+    static_configs:
+      - targets: ['localhost:9100']   # Node Exporter textfile collector path
+
+# Remote write to Grafana Cloud (optional)
+# Uncomment and replace with your Grafana Cloud instance ID and API key
+#remote_write:
+#  - url: "https://prometheus-blocks-prod-us-central1.grafana.net/api/prom/push"
+#    basic_auth:
+#      username: "<Grafana Cloud instance ID>"
+#      password: "<API key>"
+```
+
