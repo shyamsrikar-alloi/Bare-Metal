@@ -199,6 +199,7 @@ WantedBy=multi-user.target
 ```
 - sudo nano /etc/systemd/system/node_exporter.service
 ```
+```
 sudo systemctl daemon-reload
 sudo systemctl restart prometheus
 ```
