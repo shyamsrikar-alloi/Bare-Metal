@@ -205,16 +205,3 @@ WantedBy=multi-user.target
 sudo systemctl daemon-reload
 sudo systemctl restart prometheus
 ```
-```
-[Unit]
-Description=Prometheus Node Exporter
-After=network.target
-
-[Service]
-User=monitoring
-ExecStart=/usr/local/bin/node_exporter
-
-
-[Install]
-WantedBy=multi-user.target
-```
